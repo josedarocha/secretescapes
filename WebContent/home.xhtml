@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body"> 
+		<h1><h:outputText value="#{messages.Welcome}" /></h1>
+		
+		<rich:panel>
+        	<br/><br/><br/><br/><br/><br/>
+        	<center>
+        		<font size="3" >
+        			<i>
+        				#{messages.MenuHelp}
+        			</i>
+        		</font>
+        	</center>
+        	<br/><br/><br/><br/><br/><br/>
+		</rich:panel>
+	</ui:define>
+</ui:composition>

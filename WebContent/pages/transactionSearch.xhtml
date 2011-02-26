@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-15" ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:remove>
+		<!--
+		Criterias to search a transaction.
+		
+		Parameters:
+			- reRender: Id of the JSF component to rerender
+					   Example: <ui:param name="reRender" value="usersTable"  />
+							
+		-->
+	</ui:remove>
+	
+	<h:panelGrid columns="2" >
+		<ui:remove><!-- Payer. --></ui:remove>
+		<s:decorate template="/layout/edit.xhtml" >
+			<ui:define name="label">#{messages.Payer}</ui:define>
+			<h:selectOneMenu value="#{transactionSearch.payer}" >
+				<s:selectItems var="_payer" value="#{accounts}" 
+					label="#{_payer.name}" noSelectionLabel="" />
+				<s:convertEntity />
+				<a4j:support event="onchange" eventsQueue="queue" ignoreDupResponses="true"
+					actionListener="#{transactionSearch.searchAgain}"
+					reRender="#{reRender}" />
+			</h:selectOneMenu>
+		</s:decorate>
+
+		<ui:remove><!-- Payee. --></ui:remove>
+		<s:decorate template="/layout/edit.xhtml" >
+			<ui:define name="label">#{messages.Payee}</ui:define>
+			<h:selectOneMenu value="#{transactionSearch.payee}" >
+				<s:selectItems var="_payee" value="#{accounts}" 
+					label="#{_payee.name}" noSelectionLabel="" />
+				<s:convertEntity />
+				<a4j:support event="onchange" eventsQueue="queue" ignoreDupResponses="true"
+					actionListener="#{transactionSearch.searchAgain}"
+					reRender="#{reRender}" />
+			</h:selectOneMenu>
+		</s:decorate>
+	</h:panelGrid>
+</ui:composition>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages login-view-id="/login.xhtml"
+ no-conversation-view-id="/home.xhtml"
+ xmlns="http://jboss.com/products/seam/pages"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+ <page view-id="*">
+  <navigation>
+   <rule if-outcome="home">
+    <end-conversation before-redirect="true"/>
+    <redirect view-id="/home.xhtml"/>
+   </rule>
+   <rule if-outcome="newTransaction">
+    <end-conversation before-redirect="true"/>
+    <redirect view-id="/pages/pay.xhtml"/>
+   </rule>
+   <rule if-outcome="transactions">
+    <end-conversation before-redirect="true"/>
+    <redirect view-id="/pages/transactions.xhtml"/>
+   </rule>
+  </navigation>
+ </page>
+ <exception class="org.jboss.seam.framework.EntityNotFoundException">
+  <redirect view-id="/error.xhtml">
+   <message severity="warn">#{messages['registroNoEncontrado']}</message>
+  </redirect>
+ </exception>
+ <exception class="javax.persistence.EntityNotFoundException">
+  <redirect view-id="/error.xhtml">
+   <message severity="warn">#{messages['registroNoEncontrado']}</message>
+  </redirect>
+ </exception>
+ <exception class="javax.persistence.EntityExistsException">
+  <redirect view-id="/error.xhtml">
+   <message severity="warn">#{messages['registroDuplicado']}</message>
+  </redirect>
+ </exception>
+ <exception class="javax.persistence.OptimisticLockException">
+  <end-conversation/>
+  <redirect view-id="/error.xhtml">
+   <message severity="warn">#{messages['integridadDatos']}</message>
+  </redirect>
+ </exception>
+ <exception class="org.jboss.seam.security.AuthorizationException">
+  <redirect view-id="/error.xhtml">
+   <message severity="error">#{messages['sinPermisos']}</message>
+  </redirect>
+ </exception>
+ <exception class="org.jboss.seam.security.NotLoggedInException">
+  <redirect view-id="/login.xhtml">
+   <message severity="warn">#{messages['org.jboss.seam.NotLoggedIn']}</message>
+  </redirect>
+ </exception>
+ <exception class="javax.faces.application.ViewExpiredException">
+  <redirect view-id="/error.xhtml">
+   <message severity="warn">#{messages['sesionCaducada']}</message>
+  </redirect>
+ </exception>
+ <exception class="org.jboss.seam.ConcurrentRequestTimeoutException" log-level="trace">
+  <http-error error-code="503"/>
+ </exception>
+ <exception>
+  <redirect view-id="/error.xhtml">
+   <message severity="error">#{messages['errorInesperado']}</message>
+  </redirect>
+ </exception>
+</pages>

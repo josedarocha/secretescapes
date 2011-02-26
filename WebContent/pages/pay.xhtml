@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ISO-8859-15" ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="/layout/template.xhtml">
+
+	<ui:remove>
+		<!--Form to create a new transaction-->
+	</ui:remove>
+	<ui:define name="body">
+		<h:form>
+
+			<rich:panel>
+				<f:facet name="header">
+					<a4j:outputPanel id="panelHeader">
+						<h:outputText value="#{messages.NewTransaction}" />
+					</a4j:outputPanel>
+				</f:facet>
+
+				<ui:remove><!-- Payer. --></ui:remove>
+				<s:decorate id="payer" template="/layout/edit.xhtml" >
+					<ui:define name="label">#{messages.Payer}</ui:define>
+					<h:selectOneMenu required="true" value="#{transactionService.transaction.payer}" >
+						<s:selectItems var="_payer" value="#{accounts}" 
+							label="#{_payer.name} - #{_payer.balance}" noSelectionLabel="" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+				</s:decorate>
+
+				<ui:remove><!-- Payee. --></ui:remove>
+				<s:decorate id="payee" template="/layout/edit.xhtml" >
+					<ui:define name="label">#{messages.Payee}</ui:define>
+					<h:selectOneMenu required="true" value="#{transactionService.transaction.payee}" >
+						<s:selectItems var="_payee" value="#{accounts}" 
+							label="#{_payee.name}" noSelectionLabel="" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+				</s:decorate>
+			
+				<ui:remove><!-- Amount of money. --></ui:remove>
+				<s:decorate template="/layout/edit.xhtml" >
+					<ui:define name="label">#{messages.Amount}</ui:define>
+					<h:inputText required="true" value="#{transactionService.transaction.amount}" >
+						<f:validateDoubleRange minimum="1"  />
+					</h:inputText>
+				</s:decorate>
+								
+				<div style="clear: both;" />
+				
+			</rich:panel>
+			
+			<div style="clear: both;" />
+
+			<div class="botonera">
+				<h:commandButton value="#{messages.CreateTransaction}" action="#{transactionService.newTransaction}" /> 
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

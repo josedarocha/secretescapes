@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-15" ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<m:message xmlns="http://www.w3.org/1999/xhtml"
+		   xmlns:f="http://java.sun.com/jsf/core"
+		   xmlns:ui="http://java.sun.com/jsf/facelets"
+		   xmlns:h="http://java.sun.com/jsf/html"
+		   xmlns:c="http://java.sun.com/jstl/core"
+           xmlns:m="http://jboss.com/products/seam/mail">
+    
+    <m:from name="Administratos" address="no-reply@secretescapes.com" />
+    <ui:repeat value="#{mailSender.receivers.keyset}" var="_name">
+    	<m:to name="#{_name}" address="#{mailSender.receivers[_name]}" />
+    </ui:repeat>
+    <m:subject>New payment commited!</m:subject>
+    <m:body>
+    	<p style="margin-bottom:30px;">
+	    	<font style="padding-left:180px;" face="arial">#{mailSender.message}</font>
+    	</p>
+    </m:body>
+</m:message>

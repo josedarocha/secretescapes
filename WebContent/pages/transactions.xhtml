@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-15" ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="/layout/template.xhtml">
+
+	<ui:define name="body">
+		<a4j:form id="transactionList">
+			<rich:panel>
+				<f:facet name="header">#{messages.TransactionsTitle}</f:facet>
+				
+				<ui:remove><!-- Search Fields --></ui:remove>
+				<rich:simpleTogglePanel switchType="client" label="#{messages.SearchCriteria}">
+					<ui:include src="transactionSearch.xhtml">
+						<ui:param name="reRender" value="transactionList" />
+					</ui:include>
+				</rich:simpleTogglePanel>
+				<ui:remove><!-- End Search Fields --></ui:remove>
+
+				<ui:remove><!-- Search Buttons --></ui:remove>
+				<div>
+					<a4j:commandButton
+						value="#{messages.Search}" alt="#{messages.Search}"
+						title="#{messages.Search}"
+						eventsQueue="queue" ignoreDupResponses="true"
+						actionListener="#{transactionSearch.searchAgain}"
+						reRender="transactionList" />
+					<a4j:commandButton
+						value="#{messages.ShowAll}" alt="#{messages.ShowAll}"
+						title="#{messages.ShowAll}"
+						eventsQueue="queue" ignoreDupResponses="true"
+						actionListener="#{transactionSearch.searchAgain}"
+						action="#{transactionSearch.cleanRestrictions}"
+						reRender="transactionList" /> 
+				</div>
+				<ui:remove><!-- End Search Buttons --></ui:remove>
+				
+				<div style="clear:both" /><br/>
+
+				<ui:remove><!-- List of transactions --></ui:remove>
+				<a4j:outputPanel id="transactionList">
+					<h:outputText value="#{messages.NoTransactionFound}" rendered="#{transactions.size eq 0}" />
+				
+					<rich:dataTable id="transactionTable" value="#{transactions}" var="_transaction" rows="10"
+						rendered="#{transactions.size gt 0}" >
+						<f:facet name="caption">#{messages.TransactionListTitle}</f:facet>
+						<rich:column sortBy="#{_transaction.payer.name}" sortable="true">
+							<f:facet name="header">#{messages.Payer}</f:facet>
+							#{_transaction.payer.name}
+						</rich:column>
+						<rich:column sortBy="#{_transaction.payee.name}" sortable="true">
+							<f:facet name="header">#{messages.Payee}</f:facet>
+							#{_transaction.payee.name}
+						</rich:column>
+						<rich:column sortBy="#{_transaction.amount}" sortable="true">
+							<f:facet name="header">#{messages.Amount}</f:facet>
+							#{_transaction.amount}
+						</rich:column>
+						<rich:column sortBy="#{_transaction.date}" sortable="true">
+							<f:facet name="header">#{messages.Date}</f:facet>
+							<h:outputText value="#{_transaction.date}" >
+								<s:convertDateTime dateStyle="short"/>
+							</h:outputText>
+						</rich:column>
+					</rich:dataTable>
+
+					<div class="scrollerWrapper">
+						<h:outputText
+							value="[ #{transactions.size} ] Transactions"
+							rendered="#{transactions.size gt 0}" />
+						<div>
+							<rich:datascroller
+								for="transactionTable" pageIndexVar="pageIndex" pagesVar="pages"
+								eventsQueue="queue" ignoreDupResponses="true"
+								renderIfSinglePage="false"
+								rendered="#{transactions.size gt 0}">
+								<ui:include src="/layout/paginadorFacets.xhtml" />
+							</rich:datascroller>
+						</div>
+					</div>
+				</a4j:outputPanel>
+				<ui:remove><!-- End List of transactions--></ui:remove>
+			</rich:panel>
+		</a4j:form>
+	</ui:define>
+</ui:composition>
